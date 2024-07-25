@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchAll } from "../../redux/contactsOps";
 import { selectError, selectLoading } from "../../redux/contactsSlice";
+import { ThreeDots } from 'react-loader-spinner'
 
 
 export default function App() {
@@ -27,8 +28,15 @@ export default function App() {
       </h1>
       <ContactForm />
       <SearchBox />
-      {loading && <p>Loading message</p>}
-      {isError && <p>Error message</p> }
+      <div className={css.loader}>
+      {loading && <ThreeDots
+        visible={true}
+        height="40"
+        width="80"
+        color="#7c7c7c"
+        />}
+      </div>
+      {isError && <p className={css.error}>Oops, something went wrong! <br/> Try again later</p> }
       <ContactList />
     </div>
   );
