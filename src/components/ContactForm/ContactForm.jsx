@@ -2,22 +2,19 @@ import css from "../ContactForm/ContactForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
-import { nanoid } from "nanoid";
+import { addContacts } from "../../redux/contactsOps";
 
 export default function ContactForm() {
   const dispatch = useDispatch();
-  const id = nanoid()
 
   const initialValues = {
     name: '',
     number: ''
   };
 
-  const handleSubmit = (values, { resetForm }) => {
-    const { name, number } = values;
-    dispatch(addContact({ id, name, number }));
-    resetForm();
+  const handleSubmit = (values, actions) => {
+    dispatch(addContacts(values));
+    actions.resetForm();
   };
 
   const FeedbackSchema = Yup.object().shape({
@@ -26,7 +23,7 @@ export default function ContactForm() {
       .max(50, "Too Long!")
       .required("Required"),
     number: Yup.string()
-      .matches(/^\d{3}-\d{2}-\d{2}$/, "Valid phone number: XXX-XX-XX")
+      .matches(/^\d{3}-\d{3}-\d{4}$/, "Valid phone number: XXX-XXX-XXXX")
       .min(3, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
